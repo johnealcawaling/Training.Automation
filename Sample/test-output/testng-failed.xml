@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [SampleSuite]">
+  <parameter name="config_path" value="/config/config.properties"/>
+  <test name="SampleTest(failed)">
+    <classes>
+      <class name="com.test.Sample.ThisIsATest">
+        <methods>
+          <include name="runTest"/>
+          <include name="setUp"/>
+          <include name="cleanUp"/>
+          <include name="initializeExcelData"/>
+        </methods>
+      </class> <!-- com.test.Sample.ThisIsATest -->
+    </classes>
+  </test> <!-- SampleTest(failed) -->
+</suite> <!-- Failed suite [SampleSuite] -->

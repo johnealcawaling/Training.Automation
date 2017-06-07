@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SampleSuite">
+  <parameter name="config_path" value="/config/config.properties"/>
+  <test name="SampleTest">
+
+    <classes>
+      <class name="com.test.Sample.ThisIsATest"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
