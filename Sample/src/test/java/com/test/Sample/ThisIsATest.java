@@ -40,7 +40,7 @@ public class ThisIsATest extends TestBase {
 	@Parameters({"config_path"})
 	public void initializeExcelData(String excel_path) throws IOException{
 //		ExcelDataLoader inputLoader = new ExcelDataLoader(new File(System.getProperty("user.dir") + excel_path));
-		File f = new File("/Users/johnealcawaling/Documents/workspace/Sample/input/Test_Data.xlsx");
+		File f = new File("/Users/johnealcawaling/git/Training.Automation/Sample/input/Test_Data.xlsx");
 		FileInputStream fIn = new FileInputStream(f);
 		XSSFWorkbook workbook = new XSSFWorkbook(fIn);
 		XSSFSheet sheet = workbook.getSheetAt(0);

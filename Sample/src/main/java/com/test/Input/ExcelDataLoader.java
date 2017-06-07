@@ -70,7 +70,7 @@ public class ExcelDataLoader implements IExcelLoader{
 //		excel.getInputMap();
 //		System.out.println("TEST");
 		
-		File f = new File("/Users/johnealcawaling/Documents/workspace/Sample/input/Test_Data.xlsx");
+		File f = new File("/Users/johnealcawaling/git/Training.Automation/Sample/input/Test_Data.xlsx");
 		FileInputStream fIn = new FileInputStream(f);
 		XSSFWorkbook workbook = new XSSFWorkbook(fIn);
 		XSSFSheet sheet = workbook.getSheetAt(0);
