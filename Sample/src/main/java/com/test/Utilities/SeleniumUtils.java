@@ -21,9 +21,9 @@ public class SeleniumUtils {
 		driver.manage().window().setSize(maximizedScreenSize);
 	}
 	
-	public void captureScreenshot(WebDriver driver, int i) throws Exception{
+	public void captureScreenshot(WebDriver driver, String testName) throws Exception{
 		File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(srcFile, new File("/Users/johnealcawaling/Desktop/Test_" + i + ".png"));
+		FileUtils.copyFile(srcFile, new File("./output/temp/" + testName + ".png"));
 		
 	}
 	

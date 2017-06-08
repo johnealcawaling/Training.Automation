@@ -38,4 +38,8 @@ public class ConfigLoader {
 	public String getExcelPath(){
 		return prop.getProperty(EXCEL_PATH);
 	}
+	
+	public String getOutputPath(){
+		return prop.getProperty("OUTPUT_PATH");
+	}
 }
