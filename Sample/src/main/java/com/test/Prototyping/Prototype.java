@@ -23,5 +23,11 @@ public class Prototype {
 //		String x = p.getProperty("EXCEL_PATH");
 //		System.out.println(x);
 		
+		String[][] s = new String[1][4];
+		
+		s[0][0] = "x";
+		s[0][1] = "y";
+		
+		System.out.println(s.toString());
 	}
 }
