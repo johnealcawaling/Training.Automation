@@ -46,4 +46,9 @@ public class ConfigLoader {
 	public String getURL(){
 		return prop.getProperty("URL");
 	}
+	
+	public String getBrowser(){
+		return prop.getProperty("BROWSER");
+	}
+	
 }

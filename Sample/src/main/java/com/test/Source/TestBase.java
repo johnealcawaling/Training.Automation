@@ -17,7 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.test.Utilities.SeleniumUtils;
 
-public class TestBase {
+public class TestBase extends SeleniumUtils{
 
 	public WebDriver driver;
 	
@@ -34,13 +34,10 @@ public class TestBase {
 	private final SeleniumUtils seleniumUtil = new SeleniumUtils();
 	
 	public void openBrowser(String browser, String url){
-		
 		try{
-			
 			if(browser.toLowerCase().contains(CHROME_FLAG)){
 			
 				System.setProperty(CHROME_DRIVER, CHROME_DRIVER_PATH);
-				
 				//Add chrome options
 				ChromeOptions options = new ChromeOptions();
 				options.addArguments("chrome.switches","--disable-extensions");
@@ -76,25 +73,32 @@ public class TestBase {
 		driver.quit();
 	}
 	
-	public void enterText(String xPath, String value){
-		enterText(xPath, value, false);
+	public void enterText(WebDriver driver, String xPath, String value){
+		enterText(driver, xPath, value, false);
 	}
 	
-	public void enterText(String xPath, String value, boolean blnEnter){
+	public void enterText(WebDriver driver, String xPath, String value, boolean blnEnter){
 		WebElement elem = null;
 		
-		List<WebElement> aE = driver.findElements(By.xpath(xPath));
+		System.out.println(driver);
 		
-		for(WebElement e: aE){
-			if(e.isDisplayed() && e.isEnabled()){
-				e.sendKeys(value);
-				elem = e;
-				break;
+		try{
+			List<WebElement> aE = driver.findElements(By.xpath(xPath));
+			
+			for(WebElement e: aE){
+				if(e.isDisplayed() && e.isEnabled()){
+					e.sendKeys(value);
+					elem = e;
+					break;
+				}
 			}
-		}
 		
 		if(blnEnter){
 			elem.sendKeys(Keys.ENTER);
+		}
+		
+		}catch(Exception e){
+			System.out.println("ERROR_" + this.getClass().getName() + "_enterText: " + e.getMessage());
 		}
 	}
 	
@@ -102,7 +106,7 @@ public class TestBase {
 		
 	}
 	
-	public void clickObject(String xPath){
+	public void clickObject(WebDriver driver, String xPath){
 		List<WebElement> aE = driver.findElements(By.xpath(xPath));
 		for(WebElement e: aE){
 			if(e.isDisplayed() && e.isEnabled()){
@@ -124,6 +128,21 @@ public class TestBase {
 	
 	public void waitForObject(String xPath){
 		(new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPath)));
+	}
+	
+	public WebElement findObject(WebDriver driver, String xPath){
+		WebElement element = null;
+		
+		List<WebElement> aE = driver.findElements(By.xpath(xPath));
+		
+		for(WebElement e: aE){
+			if(e.isDisplayed() && e.isEnabled()){
+				element = e;
+				break;
+			}
+		}
+		
+		return element;
 	}
 	
 	
