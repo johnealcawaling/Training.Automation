@@ -86,20 +86,8 @@ public class OutputGenerator implements IOutputGenerator{
 		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.err.println("Error: " + e.getMessage());
+			System.err.println("ERROR_" + this.getClass().getName() + "_generateResult: " + e.getMessage());
 		}
 	}
 	
-	
-	
-	public static void main(String[] args) throws IOException{
-		File f = new File("/Users/johnealcawaling/git/Training.Automation/Sample/testing/output_excel/test.xlsx");
-		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-		map.put("TC1", "PASSED");
-		map.put("TC2", "FAILED");
-		OutputGenerator o = new OutputGenerator(f,map);
-		o.generateResult();
-		System.out.println("DONE");
-//		System.out.println(map);
-	}
 }

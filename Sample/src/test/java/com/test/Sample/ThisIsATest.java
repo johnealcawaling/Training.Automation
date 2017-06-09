@@ -33,16 +33,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ThisIsATest extends TestBase {
 	
-	private final SeleniumUtils selenium = new SeleniumUtils();		
+	private final SeleniumUtils seleniumUtil = new SeleniumUtils();		
 	private static final Logger logger = Logger.getLogger(ThisIsATest.class);
 	
 	private IExcelLoader excel;
+	private IOutputGenerator generator;
 	private	ConfigLoader config;
 	
 	private static LinkedHashMap<String, LinkedHashMap<String, String>> inputMap;
 	private LinkedHashMap<String, String> outputMap = new LinkedHashMap<String, String>();
-		
-//	private SoftAssert softAssert = new SoftAssert();
 	
 	@BeforeSuite
 	@Parameters({"config_path"})
@@ -51,22 +50,11 @@ public class ThisIsATest extends TestBase {
 		excel = new ExcelDataLoader(new File("." + config.getExcelPath()));
 		inputMap = excel.getInputMap();
 	}
-	
-	@BeforeClass
-	public void setUp(){
-		System.out.println("Initialize run...");
-		this.openBrowser("http://www.google.com");
-	}
-	
-	@AfterClass
-	public void cleanUp(){
-		driver.quit();
-	}
-	
+		
 	@AfterSuite
 	@Parameters({"config_path"})
-	public void endTest(String config_path) throws IOException{
-		IOutputGenerator generator = new OutputGenerator(new File("." + config.getOutputPath() + 
+	public void generateCustomTestResult(String config_path) throws IOException{
+		generator = new OutputGenerator(new File("." + config.getOutputPath() + 
 				this.getClass().getSimpleName() + ".xlsx"), outputMap);
 		generator.generateResult();
 		System.out.println("DONE");
@@ -77,40 +65,33 @@ public class ThisIsATest extends TestBase {
 		return DataMapLoader.getDataMap(inputMap);
 	}
 	
-
+	
+	//this must be simplified.
+	//implement page factory model
+	//organize object repository into property files
 	@Test(dataProvider="DataParam")
 	public void runTest(String testName, LinkedHashMap<String, String> inputMap) throws Exception{
-		//Open URL
-		Reporter.log("Open browser and go to URL.");
-		driver.get(inputMap.get("Browser"));
+		String exp = null;
+		String act = null;
 		
-		WebElement element = driver.findElement(By.xpath("//input[@name='q']"));
+		try{
+			openBrowser(inputMap.get("Browser"), config.getURL());
+			enterText("//input[@name='q']", inputMap.get("Search"));
+			pressEnter();
+
+			String xPath = "//*[@id='hdtb-msb-vis']/div[*]/a[text()='Images']";
+
+			waitForObject(xPath);
+			clickObject(xPath);
+			
+			seleniumUtil.captureScreenshot(driver, testName);
+			
+			closeBrowser();
 		
-		Reporter.log("Enter text to search.");
-		element.sendKeys(inputMap.get("Search"));
-		element.sendKeys(Keys.ENTER);
-		
-		String exp = inputMap.get("Search"); 
-		String act = inputMap.get("Search_2");
-		
-		Reporter.log("Compare text 1 and 2 if similar.");
-		if(exp.equalsIgnoreCase(act)){
-			outputMap.put(testName, "PASSED");
-		}else{
-			outputMap.put(testName, "FAILED");
+		}catch(Exception e){
+			System.err.println("ERROR_" + this.getClass().getName() + "_runTest: " + e.getMessage());
 		}
-		
-		Assert.assertEquals(exp, act);
-		
-		String xpathExpression = "//*[@id='hdtb-msb-vis']/div[*]/a[text()='Images']";
-		
-		Reporter.log("Click Image link.");
-		WebElement obj = (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpathExpression)));
-		obj.click();
-		
-		selenium.captureScreenshot(driver, testName);
-		
-//		System.out.println(outputMap);
+	
 	}
 	
 }
