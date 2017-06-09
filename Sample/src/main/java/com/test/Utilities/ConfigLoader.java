@@ -42,4 +42,8 @@ public class ConfigLoader {
 	public String getOutputPath(){
 		return prop.getProperty("OUTPUT_PATH");
 	}
+	
+	public String getURL(){
+		return prop.getProperty("URL");
+	}
 }

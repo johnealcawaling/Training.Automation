@@ -102,7 +102,7 @@ public class ExcelDataLoader implements IExcelLoader{
 			fIn.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.err.println("Error: " + e.getMessage());
+			System.err.println("ERROR_" + this.getClass().getName() + "_getInputMap: " + e.getMessage());
 		}
 		
 		return mapInput;
@@ -145,7 +145,7 @@ public class ExcelDataLoader implements IExcelLoader{
 			fIn.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.err.println("Error: " + e.getMessage());
+			System.err.println("ERROR_" + this.getClass().getName() + "_getTestNameList: " + e.getMessage());
 		}
 		
 		return aList;
