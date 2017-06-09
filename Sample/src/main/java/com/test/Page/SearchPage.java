@@ -12,6 +12,6 @@ public class SearchPage extends TestBase{
 	private WebDriver driver;
 	
 	public SearchPage(WebDriver driver){
-		
+		//test
 	}
 }
