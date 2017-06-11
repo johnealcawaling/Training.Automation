@@ -14,11 +14,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.log4testng.Logger;
 
 import com.test.Utilities.SeleniumUtils;
 
 public class TestBase extends SeleniumUtils{
-
+	private static final Logger logger = Logger.getLogger(TestBase.class);
+	
 	public WebDriver driver;
 	
 	private final String PARENT_FOLDER_PATH = System.getProperty("user.dir");
@@ -36,7 +38,8 @@ public class TestBase extends SeleniumUtils{
 	public void openBrowser(String browser, String url){
 		try{
 			if(browser.toLowerCase().contains(CHROME_FLAG)){
-			
+				logger.info("Initialize browser...");
+				
 				System.setProperty(CHROME_DRIVER, CHROME_DRIVER_PATH);
 				//Add chrome options
 				ChromeOptions options = new ChromeOptions();
@@ -70,6 +73,7 @@ public class TestBase extends SeleniumUtils{
 	}
 	
 	public void closeBrowser(){
+		logger.info("Closing browser...");
 		driver.quit();
 	}
 	
@@ -87,6 +91,7 @@ public class TestBase extends SeleniumUtils{
 			
 			for(WebElement e: aE){
 				if(e.isDisplayed() && e.isEnabled()){
+					logger.info("Entering text");
 					e.sendKeys(value);
 					elem = e;
 					break;
@@ -98,6 +103,7 @@ public class TestBase extends SeleniumUtils{
 		}
 		
 		}catch(Exception e){
+			logger.error("Failed to enter text");
 			System.out.println("ERROR_" + this.getClass().getName() + "_enterText: " + e.getMessage());
 		}
 	}
@@ -137,6 +143,9 @@ public class TestBase extends SeleniumUtils{
 		
 		for(WebElement e: aE){
 			if(e.isDisplayed() && e.isEnabled()){
+				
+				logger.info(e.getText() + " object found");
+				
 				element = e;
 				break;
 			}
@@ -144,8 +153,6 @@ public class TestBase extends SeleniumUtils{
 		
 		return element;
 	}
-	
-	
 
 	
 }

@@ -10,6 +10,7 @@ import com.test.Source.TestBase;
 import com.test.Utilities.ConfigLoader;
 import com.test.Utilities.SeleniumUtils;
 
+import org.testng.Reporter;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
@@ -58,7 +59,7 @@ public class ThisIsATest{
 	public void initializeDriverAndPages() throws Exception{
 		String browser = config.getBrowser();
 		String url = config.getURL();
-		
+	
 		helper.openBrowser(browser, url);
 		//this is the part where page class are initiated
 		homepage = new HomePage(helper.driver);
@@ -77,15 +78,20 @@ public class ThisIsATest{
 	@Test(dataProvider="DataParam")
 	public void runTest(String testName, LinkedHashMap<String, String> inputMap) throws Exception{
 		try{	
+			Reporter.log("Start testing...");
+			
 			homepage.searchBox().sendKeys(inputMap.get("Search"));
 			helper.pressEnter();
 			homepage.link_Image().click();
 			
 			helper.captureScreenshot(helper.driver, testName);
-//			
-//			helper.closeBrowser();
+			
+			helper.closeBrowser();
+			
+			Reporter.log("End testing...");
 		
 		}catch(Exception e){
+			logger.error(this.getClass().getName() + " execution failed");
 			System.err.println("ERROR_" + this.getClass().getName() + "_runTest: " + e.getMessage());
 		}
 	
