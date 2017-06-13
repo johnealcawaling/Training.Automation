@@ -79,12 +79,15 @@ public class ThisIsATest{
 		try{	
 			Reporter.log("Start testing...");
 			
-			homepage.searchBox().sendKeys(inputMap.get("Search"));
+			Reporter.log("Enter text");
+			helper.enterText(homepage.searchBox(), inputMap.get("Search"));
+			Reporter.log("Press enter");
 			helper.pressEnter();
-			homepage.link_Image().click();
-			
-			helper.captureScreenshot(helper.driver, testName);
-			
+			helper.captureScreenshot(testName);
+			Reporter.log("Click Image link");
+			helper.clickObject(homepage.link_Image());
+			helper.captureScreenshot(testName + "1");
+			Reporter.log("Close browser");
 			helper.closeBrowser();
 			
 			Reporter.log("End testing...");

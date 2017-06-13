@@ -1,10 +1,15 @@
 package com.test.Source;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,6 +19,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -78,48 +85,27 @@ public class TestBase extends SeleniumUtils{
 		driver.quit();
 	}
 	
-	public void enterText(WebDriver driver, String xPath, String value){
-		enterText(driver, xPath, value, false);
-	}
-	
-	public void enterText(WebDriver driver, String xPath, String value, boolean blnEnter){
-		WebElement elem = null;
-		
-		System.out.println(driver);
-		
-		try{
-			List<WebElement> aE = driver.findElements(By.xpath(xPath));
+	public void enterText(WebElement element, String value){
+		if(element.isDisplayed() && element.isEnabled()){
+			element.sendKeys(value);
 			
-			for(WebElement e: aE){
-				if(e.isDisplayed() && e.isEnabled()){
-					logger.info("Entering text");
-					e.sendKeys(value);
-					elem = e;
-					break;
-				}
-			}
-		
-		if(blnEnter){
-			elem.sendKeys(Keys.ENTER);
+			logger.info("Set " + value + " to " + element.getText());
 		}
 		
-		}catch(Exception e){
-			logger.error("Failed to enter text");
-			System.out.println("ERROR_" + this.getClass().getName() + "_enterText: " + e.getMessage());
-		}
+		
 	}
 	
 	public void selectFromDropdown(String value){
 		
 	}
 	
-	public void clickObject(WebDriver driver, String xPath){
-		List<WebElement> aE = driver.findElements(By.xpath(xPath));
-		for(WebElement e: aE){
-			if(e.isDisplayed() && e.isEnabled()){
-				e.click();
-				break;
-			}
+	public void clickObject(WebElement element){
+		String name = element.getText();
+		
+		if(element.isDisplayed() && element.isEnabled()){
+			element.click();
+			
+			logger.info("Click " + name);
 		}
 	}
 	
@@ -152,8 +138,25 @@ public class TestBase extends SeleniumUtils{
 			}
 		}
 		
+		if(element == null){
+			logger.error(xPath + "was not found.");
+		}
+		
 		return element;
 	}
 
-	
+	public void captureScreenshot(String testName) throws Exception{
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+		
+		File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		String path = System.getProperty("user.dir") + "/output/temp/" + testName + "_" + timeStamp + ".png";
+		
+		File screenShotName = new File(path);
+		FileUtils.copyFile(srcFile, screenShotName);
+		
+		String filePath = screenShotName.toString();
+		String logPath = "<a href=" + path + " target='_blank' >" + filePath + "</a>";
+		Reporter.log(logPath);
+		
+	}
 }
