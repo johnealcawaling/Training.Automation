@@ -14,12 +14,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.log4testng.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.test.Utilities.SeleniumUtils;
 
 public class TestBase extends SeleniumUtils{
-	private static final Logger logger = Logger.getLogger(TestBase.class);
+	private static final Logger logger = LogManager.getLogger(TestBase.class);
 	
 	public WebDriver driver;
 	

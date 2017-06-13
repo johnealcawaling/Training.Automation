@@ -5,17 +5,16 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.testng.log4testng.Logger;
 
 import com.test.Source.TestBase;
 
 public class HomePage extends TestBase{
 	
-	private static final Logger logger  = Logger.getLogger(HomePage.class);
+	private static final Logger logger  = LogManager.getLogger(HomePage.class);
 	
 	private Properties prop;
 	private final String name = this.getClass().getSimpleName().toUpperCase();
