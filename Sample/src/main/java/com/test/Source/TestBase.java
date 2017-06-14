@@ -1,6 +1,7 @@
 package com.test.Source;
 
 import java.io.File;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,7 +19,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Reporter;
 import org.apache.commons.io.FileUtils;
@@ -46,7 +50,7 @@ public class TestBase extends SeleniumUtils{
 	public void openBrowser(String browser, String url){
 		try{
 			if(browser.toLowerCase().contains(CHROME_FLAG)){
-				logger.info("Initialize browser...");
+				logger.info("Initialize Chrome browser...");
 				
 				System.setProperty(CHROME_DRIVER, CHROME_DRIVER_PATH);
 				//Add chrome options
@@ -63,6 +67,7 @@ public class TestBase extends SeleniumUtils{
 				seleniumUtil.maximizeScreen(driver);
 			
 			}else if(browser.toLowerCase().contains(FIREFOX_FLAG)){
+				logger.info("Initialize Firefox browser...");
 				
 				System.setProperty(FIREFOX_DRIVER, FIREFOX_DRIVER_PATH);
 				driver = new FirefoxDriver();
@@ -76,7 +81,48 @@ public class TestBase extends SeleniumUtils{
 			System.err.println("ERROR_" + this.getClass().getName() + "_openBrowser: " + e.getMessage());
 		}
 		
+		logger.info("Go to " + url);
 		driver.get(url);
+		
+	}
+	
+	public void openBrowserOnRemote(String browser, String url, String nodeURL, Platform platform){
+		DesiredCapabilities cap = null;
+		
+		try{
+			if(browser.toLowerCase().contains(CHROME_FLAG)){
+				ChromeOptions options = new ChromeOptions();
+		
+				options.addArguments("chrome.switches","--disable-extensions");
+				options.addArguments("--disable-notifications");
+				options.addArguments("disable-infobars");
+				options.addArguments("--start-maximized");
+				
+				cap = DesiredCapabilities.chrome();
+				cap.setCapability(ChromeOptions.CAPABILITY, options);
+				
+			}else if(browser.toLowerCase().contains(FIREFOX_FLAG)){
+				cap = DesiredCapabilities.firefox();
+				
+			}
+			
+			cap.setPlatform(platform);
+			
+			driver = new RemoteWebDriver(new URL(nodeURL), cap);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+			
+			if(browser.toLowerCase().contains(CHROME_FLAG)){
+				seleniumUtil.maximizeScreen(driver);
+			}else{
+				driver.manage().window().maximize();
+			}
+			
+			driver.get(url);
+			
+			
+		}catch(Exception e){
+			System.err.println("ERROR_" + this.getClass().getName() + "_openBrowser: " + e.getMessage());
+		}
 		
 	}
 	
@@ -95,8 +141,13 @@ public class TestBase extends SeleniumUtils{
 		
 	}
 	
-	public void selectFromDropdown(String value){
-		
+	public void selectFromDropdown(WebElement element, String value){
+		if(element.isDisplayed() && element.isEnabled()){
+			Select dropdown = new Select(element);
+			dropdown.selectByVisibleText(value);
+			
+			logger.info("Select " + value + " from " + element.getText() + " dropdown");
+		}
 	}
 	
 	public void clickObject(WebElement element){
