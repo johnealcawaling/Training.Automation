@@ -195,6 +195,16 @@ public class TestBase extends SeleniumUtils{
 		
 		return element;
 	}
+	
+	public String getROAttribute(WebElement element, String attribute){
+		String value = null;
+		if(element.isDisplayed() && element.isEnabled()){
+			value = element.getAttribute(attribute).trim();
+		}
+		
+		return value;
+		
+	}
 
 	public void captureScreenshot(String testName) throws Exception{
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
