@@ -27,4 +27,22 @@ public class DataMapLoader {
 		return dataParam;
 		
 	}
+	
+	public static Object[][] getDataMapTest(LinkedHashMap<String, LinkedHashMap<String, String>> map, String testName){
+		
+		int iSize = map.size();
+		Object[][] dataParam = null;
+		
+		if(iSize > 0){
+			
+			dataParam = new Object[iSize][2];
+			
+			LinkedHashMap<String, String> dataMap = map.get(testName);
+			dataParam[0][0] = testName;
+			dataParam[0][1] = dataMap;			
+		}
+		
+		return dataParam;
+		
+	}
 }

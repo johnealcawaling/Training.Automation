@@ -170,7 +170,7 @@ public class TestBase extends SeleniumUtils{
 		action.sendKeys(Keys.ENTER).build().perform();
 	}
 	
-	public void waitForObject(String xPath){
+	public void waitForObject(WebDriver driver, String xPath){
 		(new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPath)));
 	}
 	
